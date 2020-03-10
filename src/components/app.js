@@ -481,8 +481,8 @@ export default class App extends Component {
 		}
 		
 		return (
-			<div id="app" class='game'>
-				{hands && <>
+			<div id="app">
+				{hands && <div class='game'>
 				{loading ? <Loader /> : null}
 				<Cogs open={this.openMenu} toggle={this.toggle} />
 				<OffCanvasMenu toggle={this.toggle} wallet={wallet} withdraw={this.handleWithdraw} topUp={this.handleInvoice} />
@@ -514,7 +514,7 @@ export default class App extends Component {
 						<span>{`Stack: ${this.state.bank} sats`}</span>
 					</section>
 				</section>
-				</>}
+				</div>}
 				{invoice && <Modal open={invoice} qr={this.state.invoiceQR} close={this.resetInvoice} />}
 				{this.state.lnurl && <LNURLModal open={this.state.lnurl} qr={this.state.lnurlqr} sats={wallet.balance} close={this.resetInvoice} />}
 				{config && !wallet ? <InitModal open={!wallet} close={this.updateSettings} /> : null}
