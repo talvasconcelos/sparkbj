@@ -14,6 +14,7 @@ export const idb = {
     getWalletDetails: async () => {
         const isWallet = await get('wallet_id', sparkdb)
         if(!isWallet) {
+            console.debug('No wallet!')
             return false
         }
         const wallet = {}

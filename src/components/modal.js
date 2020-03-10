@@ -36,7 +36,7 @@ export const Modal = ({open, qr, close, top = false}) => {
                 <div class="content">
                     {!status && 
                     <>
-                        <p>Scan to pay 10000 satoshis</p>
+                        <p>Scan to pay 1000 satoshis</p>
                         <br/>
                         <img src={qr} class="img-responsive" alt={open}/>
                         <br/>

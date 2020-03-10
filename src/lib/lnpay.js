@@ -3,10 +3,6 @@ const KEY = process.env.PREACT_APP_LNPAY_KEY
 const AUTH = btoa(KEY + ':')
 const URL = 'https://lnpay.co/v1'
 
-const generateLabel = () => ({
-    user_label: 'sparkbj_' + [...Array(16)].map(_ => (Math.random() * 36 | 0).toString(36)).join ``
-})
-
 export const lnpay = {
     createWallet: async () => {
         const response = await fetch(`${URL}/wallet`, {
@@ -15,7 +11,7 @@ export const lnpay = {
                 'Authorization': `Basic ${AUTH}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(generateLabel())
+            body: JSON.stringify({user_label: `sparkBJ`})
         })
         const body = await response.json()
         const wallet = {

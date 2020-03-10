@@ -48,7 +48,8 @@ export default class App extends Component {
 		isSplit: false,
 		canSplit: false,
 		canDoubleDown: false,
-		loading: true
+		loading: true,
+		init: false
 	}
 
 	toggle = createRef()
@@ -427,13 +428,14 @@ export default class App extends Component {
 	setInitials = async () => {
 		const { wallet } = this.state
 		if(!wallet.balance || wallet.balance < this.state.settings.minimumBet) {
-			this.handleInvoice()
+			return this.handleInvoice()
 		}
 		await this.setStateSync({
 			shoe: this.resetShoe(),
-			bank: this.state.wallet.balance,
-			hands: [clone(BASE_HAND), clone(BASE_HAND)]
+			hands: [clone(BASE_HAND), clone(BASE_HAND)],
+			bank: this.state.wallet.balance
 		})
+		this.startNewGame()
 	}
 
 	resetRound = async () => {
@@ -457,23 +459,18 @@ export default class App extends Component {
 		const wallet = await idb.getWalletDetails()
 		if (!wallet) {
 			this.setState({ loading: false, config })
-			//console.debug('settings')
-			return
+			console.debug('open init modal')
+			return //(<InitModal open={!wallet}  close={this.updateSettings}/>)
 		}
 		this.setState({
 			config,
 			wallet,
 			loading: false
-		})
+		}, this.setInitials)
 	}
 
 	componentDidMount = async () => {
 		await this.updateSettings()
-		await this.setInitials()
-		if(this.state.wallet && this.state.wallet.balance > this.state.settings.minimumBet){
-			//console.log(this.state)
-			this.startNewGame()
-		}
 	}
 
 	render(props, { hands, message = null, loading = true, config, wallet, invoice = null }) {
@@ -483,8 +480,9 @@ export default class App extends Component {
             return B.score(hand.cards)
 		}
 		
-		return (hands &&
+		return (
 			<div id="app" class='game'>
+				{hands && <>
 				{loading ? <Loader /> : null}
 				<Cogs open={this.openMenu} toggle={this.toggle} />
 				<OffCanvasMenu toggle={this.toggle} wallet={wallet} withdraw={this.handleWithdraw} topUp={this.handleInvoice} />
@@ -516,8 +514,9 @@ export default class App extends Component {
 						<span>{`Stack: ${this.state.bank} sats`}</span>
 					</section>
 				</section>
+				</>}
 				{invoice && <Modal open={invoice} qr={this.state.invoiceQR} close={this.resetInvoice} />}
-				{this.state.lnurl && <LNURLModal open={this.state.lnurl} qr={this.state.lnurlqr} sats={wallet.balance} issats={config.units === 'sats'} close={this.resetInvoice} />}
+				{this.state.lnurl && <LNURLModal open={this.state.lnurl} qr={this.state.lnurlqr} sats={wallet.balance} close={this.resetInvoice} />}
 				{config && !wallet ? <InitModal open={!wallet} close={this.updateSettings} /> : null}
 				
 				{message && <div id="toast"><span>{message}</span></div>}
