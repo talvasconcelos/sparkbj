@@ -427,7 +427,7 @@ export default class App extends Component {
 
 	setInitials = async () => {
 		const { wallet } = this.state
-		if(!wallet.balance || wallet.balance < this.state.settings.minimumBet) {
+		if(wallet && (!wallet.balance || wallet.balance < this.state.settings.minimumBet)) {
 			return this.handleInvoice()
 		}
 		await this.setStateSync({
