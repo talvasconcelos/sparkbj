@@ -38,7 +38,7 @@ export const Modal = ({open, qr, close, top = false}) => {
                     <>
                         <p>Scan to pay 1000 satoshis</p>
                         <br/>
-                        <img src={qr} class="img-responsive" alt={open}/>
+                        <a href={`lightning:${open.payment_request}`}><img src={qr} class="img-responsive" alt={open}/></a>
                         <br/>
                         <p>Your wallet is empty or your balance is less than the minimum bet! Please refill it.</p>
                     </>}
