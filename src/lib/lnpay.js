@@ -1,7 +1,7 @@
 const KEY = process.env.PREACT_APP_LNPAY_KEY
 
 const AUTH = btoa(KEY + ':')
-const URL = 'https://lnpay.co/v1'
+const URL = 'https://api.lnpay.co/v1'
 
 export const lnpay = {
     createWallet: async () => {
